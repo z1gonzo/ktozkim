@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    build: ./database
+    container_name: ktozkim-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ktozkim
+      POSTGRES_USER: ktozkim_user
+      POSTGRES_PASSWORD: ktozkim_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - ktozkim-network
+
+  # Backend API
+  backend:
+    build: ./backend
+    container_name: ktozkim-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      DATABASE_URL: postgresql://ktozkim_user:ktozkim_password@db:5432/ktozkim
+      JWT_SECRET: development_jwt_secret_key_change_in_production
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - ktozkim-network
+
+  # Frontend React App
+  frontend:
+    build: ./frontend
+    container_name: ktozkim-frontend
+    restart: unless-stopped
+    environment:
+      REACT_APP_API_URL: http://localhost:5000/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - ktozkim-network
+
+volumes:
+  db_data:
+
+networks:
+  ktozkim-network:
+    driver: bridge
