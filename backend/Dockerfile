@@ -1,4 +1,22 @@
-# Use Node.js 18 Alpine for smaller image
+# Build stage
+FROM node:18-alpine as build
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies for build)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Build TypeScript
+RUN npm run build
+
+# Production stage
 FROM node:18-alpine
 
 # Set working directory
@@ -7,14 +25,11 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install only production dependencies
+RUN npm ci --only=production && npm cache clean --force
 
-# Copy source code
-COPY . .
-
-# Build TypeScript
-RUN npm run build
+# Copy built application from build stage
+COPY --from=build /app/dist ./dist
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs
