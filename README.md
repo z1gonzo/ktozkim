@@ -1,4 +1,4 @@
-# Ktoż Kim? (ktozkim.pl) - Civic Watchdog Platform
+# Kto z kim? (ktozkim.pl) - Civic Watchdog Platform
 
 A platform for documenting and exploring connections, signs of hypocrisy, and suspicions of nepotism among public figures in cities and nationwide.
 
