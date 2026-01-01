@@ -2,7 +2,7 @@ const Home = () => {
   return (
     <div className="home">
       <div className="hero">
-        <h1>Welcome to Ktoż Kim?</h1>
+        <h1>Welcome to Kto z kim?</h1>
         <p>
           A civic watchdog platform for documenting and exploring connections,
           signs of hypocrisy, and suspicions of nepotism among public figures
