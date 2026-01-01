@@ -1,55 +1,58 @@
 import express from 'express';
+import { ReportModel } from '../models/Report';
+import { body, param, query, validationResult } from 'express-validator';
 
 const router = express.Router();
 
-// Mock data - replace with actual DB queries
-const mockReports = [
-  {
-    id: 1,
-    userId: 1,
-    officialId: 1,
-    allegationType: 'conflict_of_interest',
-    title: 'Potential Conflict in City Contract',
-    description: 'The councilor appears to have connections to the company awarded the recent city contract.',
-    evidence: 'Link to news article, contract documents',
-    status: 'pending',
-    createdAt: '2024-01-02T00:00:00Z',
-    updatedAt: '2024-01-02T00:00:00Z',
-  },
-];
-
 // Get all reports (with optional filtering)
-router.get('/', (req: express.Request, res: express.Response) => {
+router.get('/', [
+  query('status').optional().isString(),
+  query('allegationType').optional().isString(),
+  query('limit').optional().isInt({ min: 1, max: 100 }),
+  query('offset').optional().isInt({ min: 0 }),
+], async (req: express.Request, res: express.Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid query parameters',
+        errors: errors.array()
+      });
+    }
+
     const { status, allegationType, limit = 20, offset = 0 } = req.query;
 
-    let filteredReports = [...mockReports];
+    const filters = {
+      status: status as string,
+      allegationType: allegationType as string,
+      limit: parseInt(limit as string),
+      offset: parseInt(offset as string),
+    };
 
-    // Apply filters
-    if (status) {
-      filteredReports = filteredReports.filter(report =>
-        report.status === status
-      );
-    }
-
-    if (allegationType) {
-      filteredReports = filteredReports.filter(report =>
-        report.allegationType === allegationType
-      );
-    }
-
-    // Apply pagination
-    const startIndex = parseInt(offset as string);
-    const endIndex = startIndex + parseInt(limit as string);
-    const paginatedReports = filteredReports.slice(startIndex, endIndex);
+    const result = await ReportModel.findAll(filters);
 
     res.json({
       success: true,
       data: {
-        reports: paginatedReports,
-        total: filteredReports.length,
-        limit: parseInt(limit as string),
-        offset: startIndex,
+        reports: result.reports.map(report => ({
+          id: report.id,
+          userId: report.user_id,
+          officialId: report.official_id,
+          connectionId: report.connection_id,
+          allegationType: report.allegation_type,
+          title: report.title,
+          description: report.description,
+          evidence: report.evidence,
+          status: report.status,
+          reviewedBy: report.reviewed_by,
+          reviewedAt: report.reviewed_at,
+          createdAt: report.created_at,
+          updatedAt: report.updated_at,
+        })),
+        total: result.total,
+        limit: filters.limit,
+        offset: filters.offset,
       }
     });
   } catch (error) {
@@ -62,10 +65,21 @@ router.get('/', (req: express.Request, res: express.Response) => {
 });
 
 // Get report by ID
-router.get('/:id', (req: express.Request, res: express.Response) => {
+router.get('/:id', [
+  param('id').isInt({ min: 1 }),
+], async (req: express.Request, res: express.Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid ID parameter',
+        errors: errors.array()
+      });
+    }
+
     const { id } = req.params;
-    const report = mockReports.find(r => r.id === parseInt(id));
+    const report = await ReportModel.findById(parseInt(id));
 
     if (!report) {
       return res.status(404).json({
@@ -76,7 +90,23 @@ router.get('/:id', (req: express.Request, res: express.Response) => {
 
     res.json({
       success: true,
-      data: { report }
+      data: {
+        report: {
+          id: report.id,
+          userId: report.user_id,
+          officialId: report.official_id,
+          connectionId: report.connection_id,
+          allegationType: report.allegation_type,
+          title: report.title,
+          description: report.description,
+          evidence: report.evidence,
+          status: report.status,
+          reviewedBy: report.reviewed_by,
+          reviewedAt: report.reviewed_at,
+          createdAt: report.created_at,
+          updatedAt: report.updated_at,
+        }
+      }
     });
   } catch (error) {
     console.error('Get report error:', error);
@@ -88,46 +118,74 @@ router.get('/:id', (req: express.Request, res: express.Response) => {
 });
 
 // Create new report (requires authentication)
-router.post('/', (req: express.Request, res: express.Response) => {
+router.post('/', [
+  body('officialId').optional().isInt({ min: 1 }),
+  body('connectionId').optional().isInt({ min: 1 }),
+  body('allegationType').isString().notEmpty(),
+  body('title').isString().notEmpty(),
+  body('description').isString().notEmpty(),
+  body('evidence').optional().isString(),
+], async (req: express.Request, res: express.Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid request body',
+        errors: errors.array()
+      });
+    }
+
     const {
       officialId,
+      connectionId,
       allegationType,
       title,
       description,
       evidence
     } = req.body;
 
-    // Basic validation
-    if (!officialId || !allegationType || !title || !description) {
+    // Basic validation - at least one of officialId or connectionId must be provided
+    if (!officialId && !connectionId) {
       return res.status(400).json({
         success: false,
-        message: 'Missing required fields'
+        message: 'Either officialId or connectionId must be provided'
       });
     }
 
     // TODO: Get userId from authenticated user
-    const userId = 1; // Mock user ID
+    const userId = 1; // Mock user ID for now
 
-    const newReport = {
-      id: mockReports.length + 1,
-      userId,
-      officialId: parseInt(officialId),
-      allegationType,
+    const newReport = await ReportModel.create({
+      user_id: userId,
+      official_id: officialId ? parseInt(officialId) : undefined,
+      connection_id: connectionId ? parseInt(connectionId) : undefined,
+      allegation_type: allegationType,
       title,
       description,
-      evidence: evidence || null,
-      status: 'pending',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    mockReports.push(newReport);
+      evidence,
+    });
 
     res.status(201).json({
       success: true,
       message: 'Report submitted successfully',
-      data: { report: newReport }
+      data: {
+        report: {
+          id: newReport.id,
+          userId: newReport.user_id,
+          officialId: newReport.official_id,
+          connectionId: newReport.connection_id,
+          allegationType: newReport.allegation_type,
+          title: newReport.title,
+          description: newReport.description,
+          evidence: newReport.evidence,
+          status: newReport.status,
+          reviewedBy: newReport.reviewed_by,
+          reviewedAt: newReport.reviewed_at,
+          createdAt: newReport.created_at,
+          updatedAt: newReport.updated_at,
+        }
+      }
     });
   } catch (error) {
     console.error('Create report error:', error);

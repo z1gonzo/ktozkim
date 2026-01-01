@@ -2,19 +2,9 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { body, validationResult } from 'express-validator';
+import { UserModel } from '../models/User';
 
 const router = express.Router();
-
-// Mock user database - replace with actual DB queries
-const users: any[] = [
-  {
-    id: 1,
-    email: 'admin@ktozkim.pl',
-    password: '$2b$10$dummy.hash.for.dev', // 'password'
-    firstName: 'Admin',
-    lastName: 'User',
-  }
-];
 
 // Register endpoint
 router.post('/register', [
@@ -35,7 +25,7 @@ router.post('/register', [
     const { email, password, firstName, lastName } = req.body;
 
     // Check if user exists
-    const existingUser = users.find(u => u.email === email);
+    const existingUser = await UserModel.findByEmail(email);
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -48,14 +38,12 @@ router.post('/register', [
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
     // Create user
-    const newUser = {
-      id: users.length + 1,
+    const newUser = await UserModel.create({
       email,
-      password: passwordHash,
-      firstName,
-      lastName,
-    };
-    users.push(newUser);
+      password_hash: passwordHash,
+      first_name: firstName,
+      last_name: lastName,
+    });
 
     // Generate JWT
     const token = jwt.sign(
@@ -71,8 +59,8 @@ router.post('/register', [
         user: {
           id: newUser.id,
           email: newUser.email,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
+          firstName: newUser.first_name,
+          lastName: newUser.last_name,
         },
         token
       }
@@ -103,7 +91,7 @@ router.post('/login', [
     const { email, password } = req.body;
 
     // Find user
-    const user = users.find(u => u.email === email);
+    const user = await UserModel.findByEmail(email);
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -112,7 +100,7 @@ router.post('/login', [
     }
 
     // Check password
-    const isValidPassword = await bcrypt.compare(password, user.password);
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
     if (!isValidPassword) {
       return res.status(401).json({
         success: false,
@@ -134,8 +122,8 @@ router.post('/login', [
         user: {
           id: user.id,
           email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
+          firstName: user.first_name,
+          lastName: user.last_name,
         },
         token
       }

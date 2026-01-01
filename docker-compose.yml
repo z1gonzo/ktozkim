@@ -26,14 +26,17 @@ services:
       NODE_ENV: development
       PORT: 5000
       DATABASE_URL: postgresql://ktozkim_user:ktozkim_password@db:5432/ktozkim
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ktozkim
+      DB_USER: ktozkim_user
+      DB_PASSWORD: ktozkim_password
       JWT_SECRET: development_jwt_secret_key_change_in_production
+      FRONTEND_URL: http://localhost:3000
     ports:
       - "5000:5000"
     depends_on:
       - db
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     networks:
       - ktozkim-network
 
