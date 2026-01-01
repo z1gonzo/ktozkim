@@ -1,22 +1,4 @@
-# Build stage
-FROM node:18-alpine as build
-
-# Set working directory
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install all dependencies (including dev dependencies for build)
-RUN npm ci
-
-# Copy source code
-COPY . .
-
-# Build TypeScript
-RUN npm run build
-
-# Production stage
+# Use Node.js 18 Alpine for smaller image
 FROM node:18-alpine
 
 # Set working directory
@@ -25,21 +7,14 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Install all dependencies
+RUN npm install
 
-# Copy built application from build stage
-COPY --from=build /app/dist ./dist
+# Copy source code
+COPY . .
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-
-# Change ownership of app directory
-RUN chown -R nextjs:nodejs /app
-
-# Switch to non-root user
-USER nextjs
+# Build TypeScript
+RUN npm run build
 
 # Expose port
 EXPOSE 5000

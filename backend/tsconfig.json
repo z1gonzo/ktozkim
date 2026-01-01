@@ -13,20 +13,7 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"],
-      "@/controllers/*": ["controllers/*"],
-      "@/models/*": ["models/*"],
-      "@/routes/*": ["routes/*"],
-      "@/middleware/*": ["middleware/*"],
-      "@/utils/*": ["utils/*"],
-      "@/config/*": ["config/*"]
-    }
+    "moduleResolution": "node"
   },
   "include": [
     "src/**/*"
