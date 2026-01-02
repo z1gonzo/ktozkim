@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    jest: true, // Enable Jest globals
   },
   extends: [
     'eslint:recommended',
@@ -23,6 +24,10 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'no-undef': 'off', // Turn off for React globals
+  },
+  globals: {
+    React: 'readonly', // React global
   },
   ignorePatterns: ['dist/', 'node_modules/', '*.js'],
   settings: {
