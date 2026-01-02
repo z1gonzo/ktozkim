@@ -48,6 +48,11 @@ jobs:
         cd frontend
         npm ci
 
+    - name: Initialize test database
+      run: |
+        PGPASSWORD=ktozkim_password psql -h localhost -U ktozkim_user -d ktozkim_test -f ../database/init.sql
+      working-directory: backend
+
     - name: Run backend tests
       run: |
         cd backend
