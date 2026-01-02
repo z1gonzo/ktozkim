@@ -44,17 +44,28 @@ describe('Header', () => {
 
   it('shows user menu when authenticated', async () => {
     const mockUser = { firstName: 'Jan', lastName: 'Kowalski' };
-    localStorageMock.getItem.mockImplementation((key: string) => {
-      if (key === 'token') return 'mock-token';
-      if (key === 'user') return JSON.stringify(mockUser);
-      return null;
+
+    // Mock localStorage before rendering
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: jest.fn((key: string) => {
+          if (key === 'token') return 'mock-token';
+          if (key === 'user') return JSON.stringify(mockUser);
+          return null;
+        }),
+        setItem: jest.fn(),
+        removeItem: jest.fn(),
+        clear: jest.fn(),
+      },
+      writable: true,
     });
 
     renderWithRouter(<Header />);
 
     await waitFor(() => {
       expect(screen.getByText('Witaj, Jan!')).toBeInTheDocument();
-      expect(screen.getByText('Wyloguj się')).toBeInTheDocument();
     });
+
+    expect(screen.getByText('Wyloguj się')).toBeInTheDocument();
   });
 });
