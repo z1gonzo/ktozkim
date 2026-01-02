@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { registerUser } from '../services/api';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -40,40 +41,28 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          firstName: formData.firstName,
-          lastName: formData.lastName
-        })
+      const data = await registerUser({
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName
       });
 
-      const data = await response.json();
+      // Store token in localStorage
+      localStorage.setItem('token', data.data.token);
+      localStorage.setItem('user', JSON.stringify(data.data.user));
 
-      if (data.success) {
-        // Store token in localStorage
-        localStorage.setItem('token', data.data.token);
-        localStorage.setItem('user', JSON.stringify(data.data.user));
-
-        // Redirect to home page
-        navigate('/');
-      } else {
-        setError(data.message || 'Rejestracja nie powiodła się');
-      }
+      // Redirect to home page
+      navigate('/');
     } catch (error) {
-      setError('Błąd sieci. Spróbuj ponownie.');
+      setError(error instanceof Error ? error.message : 'Błąd sieci. Spróbuj ponownie.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleGoogleRegister = () => {
-    window.location.href = '/api/auth/google';
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/auth/google`;
   };
 
   return (
