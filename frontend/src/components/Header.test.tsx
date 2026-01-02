@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Header from './Header';
 
@@ -42,7 +42,7 @@ describe('Header', () => {
     expect(screen.getByText('Zarejestruj się')).toBeInTheDocument();
   });
 
-  it('shows user menu when authenticated', () => {
+  it('shows user menu when authenticated', async () => {
     const mockUser = { firstName: 'Jan', lastName: 'Kowalski' };
     localStorageMock.getItem.mockImplementation((key: string) => {
       if (key === 'token') return 'mock-token';
@@ -52,7 +52,9 @@ describe('Header', () => {
 
     renderWithRouter(<Header />);
 
-    expect(screen.getByText('Witaj, Jan!')).toBeInTheDocument();
-    expect(screen.getByText('Wyloguj się')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Witaj, Jan!')).toBeInTheDocument();
+      expect(screen.getByText('Wyloguj się')).toBeInTheDocument();
+    });
   });
 });
