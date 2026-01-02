@@ -3,18 +3,22 @@ import pool from '../config/database';
 export interface User {
   id: number;
   email: string;
-  password_hash: string;
+  password_hash?: string;
   first_name?: string;
   last_name?: string;
+  google_id?: string;
+  auth_provider: 'local' | 'google';
   created_at: Date;
   updated_at: Date;
 }
 
 export interface CreateUserData {
   email: string;
-  password_hash: string;
+  password_hash?: string;
   first_name?: string;
   last_name?: string;
+  google_id?: string;
+  auth_provider?: 'local' | 'google';
 }
 
 export interface UpdateUserData {
@@ -22,6 +26,8 @@ export interface UpdateUserData {
   password_hash?: string;
   first_name?: string;
   last_name?: string;
+  google_id?: string;
+  auth_provider?: 'local' | 'google';
 }
 
 export class UserModel {
@@ -39,6 +45,29 @@ export class UserModel {
       password_hash: row.password_hash,
       first_name: row.first_name,
       last_name: row.last_name,
+      google_id: row.google_id,
+      auth_provider: row.auth_provider || 'local',
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+    };
+  }
+
+  static async findByGoogleId(googleId: string): Promise<User | null> {
+    const result = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    const row = result.rows[0];
+    return {
+      id: row.id,
+      email: row.email,
+      password_hash: row.password_hash,
+      first_name: row.first_name,
+      last_name: row.last_name,
+      google_id: row.google_id,
+      auth_provider: row.auth_provider || 'local',
       created_at: row.created_at,
       updated_at: row.updated_at,
     };
@@ -58,19 +87,21 @@ export class UserModel {
       password_hash: row.password_hash,
       first_name: row.first_name,
       last_name: row.last_name,
+      google_id: row.google_id,
+      auth_provider: row.auth_provider || 'local',
       created_at: row.created_at,
       updated_at: row.updated_at,
     };
   }
 
   static async create(data: CreateUserData): Promise<User> {
-    const { email, password_hash, first_name, last_name } = data;
+    const { email, password_hash, first_name, last_name, google_id, auth_provider = 'local' } = data;
 
     const result = await pool.query(`
-      INSERT INTO users (email, password_hash, first_name, last_name)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO users (email, password_hash, first_name, last_name, google_id, auth_provider)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
-    `, [email, password_hash, first_name, last_name]);
+    `, [email, password_hash, first_name, last_name, google_id, auth_provider]);
 
     const row = result.rows[0];
     return {
@@ -79,6 +110,8 @@ export class UserModel {
       password_hash: row.password_hash,
       first_name: row.first_name,
       last_name: row.last_name,
+      google_id: row.google_id,
+      auth_provider: row.auth_provider || 'local',
       created_at: row.created_at,
       updated_at: row.updated_at,
     };
@@ -120,6 +153,8 @@ export class UserModel {
       password_hash: row.password_hash,
       first_name: row.first_name,
       last_name: row.last_name,
+      google_id: row.google_id,
+      auth_provider: row.auth_provider || 'local',
       created_at: row.created_at,
       updated_at: row.updated_at,
     };

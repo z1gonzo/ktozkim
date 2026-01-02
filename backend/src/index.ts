@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import passport from 'passport';
 import dotenv from 'dotenv';
 
 // Routes
@@ -41,6 +42,9 @@ app.use(cors({
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Passport middleware
+app.use(passport.initialize());
 
 // Health check endpoint
 app.get('/health', (req, res) => {

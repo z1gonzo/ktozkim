@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Register = () => {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const from = location.state?.from?.pathname || '/';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -25,13 +25,32 @@ const Login = () => {
     setLoading(true);
     setError('');
 
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError('Hasła nie są identyczne');
+      setLoading(false);
+      return;
+    }
+
+    // Validate password length
+    if (formData.password.length < 6) {
+      setError('Hasło musi mieć co najmniej 6 znaków');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName
+        })
       });
 
       const data = await response.json();
@@ -41,30 +60,58 @@ const Login = () => {
         localStorage.setItem('token', data.data.token);
         localStorage.setItem('user', JSON.stringify(data.data.user));
 
-        // Redirect to intended page
-        navigate(from, { replace: true });
+        // Redirect to home page
+        navigate('/');
       } else {
-        setError(data.message || 'Login failed');
+        setError(data.message || 'Rejestracja nie powiodła się');
       }
     } catch (error) {
-      setError('Network error. Please try again.');
+      setError('Błąd sieci. Spróbuj ponownie.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleRegister = () => {
     window.location.href = '/api/auth/google';
   };
 
   return (
-    <div className="login">
-      <div className="login-container">
-        <h1>Zaloguj się</h1>
+    <div className="register">
+      <div className="register-container">
+        <h1>Zarejestruj się</h1>
 
         {error && <div className="error-message">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="register-form">
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="firstName">Imię</label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+                placeholder="Wprowadź swoje imię"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="lastName">Nazwisko</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+                placeholder="Wprowadź swoje nazwisko"
+              />
+            </div>
+          </div>
+
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -87,7 +134,22 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder="Wprowadź swoje hasło"
+              placeholder="Wprowadź hasło (min. 6 znaków)"
+              minLength={6}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Potwierdź hasło</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              placeholder="Potwierdź hasło"
+              minLength={6}
             />
           </div>
 
@@ -96,7 +158,7 @@ const Login = () => {
             className="btn btn-primary"
             disabled={loading}
           >
-            {loading ? 'Logowanie...' : 'Zaloguj się'}
+            {loading ? 'Rejestrowanie...' : 'Zarejestruj się'}
           </button>
         </form>
 
@@ -105,7 +167,7 @@ const Login = () => {
         </div>
 
         <button
-          onClick={handleGoogleLogin}
+          onClick={handleGoogleRegister}
           className="btn btn-google"
         >
           <svg width="18" height="18" viewBox="0 0 24 24">
@@ -114,15 +176,15 @@ const Login = () => {
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
           </svg>
-          Zaloguj się przez Google
+          Zarejestruj się przez Google
         </button>
 
         <div className="auth-links">
-          <p>Nie masz konta? <Link to="/register">Zarejestruj się</Link></p>
+          <p>Masz już konto? <Link to="/login">Zaloguj się</Link></p>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;
