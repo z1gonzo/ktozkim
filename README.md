@@ -120,10 +120,21 @@ docker-compose up -d
 4. Monitor at: https://railway.app/project/YOUR_PROJECT_ID
 
 # Required Environment Variables in Railway:
+
+## Database Configuration
 DATABASE_URL=postgresql://user:password@host:5432/database
-JWT_SECRET=your-production-jwt-secret
+
+## JWT Authentication
+JWT_SECRET=your-production-jwt-secret-here
+
+## Application Settings
 NODE_ENV=production
 FRONTEND_URL=https://your-app.railway.app
+
+## Google OAuth Configuration (Optional)
+GOOGLE_CLIENT_ID=your-google-oauth-client-id
+GOOGLE_CLIENT_SECRET=your-google-oauth-client-secret
+GOOGLE_CALLBACK_URL=https://your-app.railway.app/api/auth/google/callback
 
 # For Multi-Service Setup (Recommended):
 # 1. Create separate Railway service for PostgreSQL database
@@ -131,6 +142,42 @@ FRONTEND_URL=https://your-app.railway.app
 # 3. Create separate Railway service for frontend (static hosting)
 # 4. Connect services using Railway's private networking
 ```
+
+### Google OAuth Setup (Optional)
+
+To enable Google authentication, follow these steps:
+
+#### 1. Create Google OAuth Credentials
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable the Google+ API
+4. Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client ID"
+5. Set Application type to "Web application"
+6. Add authorized redirect URIs:
+   - For development: `http://localhost:5000/api/auth/google/callback`
+   - For production: `https://your-app.railway.app/api/auth/google/callback`
+
+#### 2. Configure Environment Variables
+Add these to your Railway environment variables:
+```
+GOOGLE_CLIENT_ID=your-client-id-from-google
+GOOGLE_CLIENT_SECRET=your-client-secret-from-google
+GOOGLE_CALLBACK_URL=https://your-app.railway.app/api/auth/google/callback
+```
+
+#### 3. Frontend Configuration
+For production, add this environment variable to your frontend deployment:
+```
+VITE_API_BASE_URL=https://your-app.railway.app
+```
+
+#### 4. Test Google OAuth
+1. Visit your deployed app
+2. Click "Zaloguj się przez Google" button
+3. Complete Google authentication flow
+4. Should redirect back to app with authenticated session
+
+**Note**: Google OAuth will automatically create user accounts or link to existing email addresses.
 
 ### Full Deployment (Minikube)
 ```bash

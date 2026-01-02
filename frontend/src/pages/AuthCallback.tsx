@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 const AuthCallback = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { login } = useAuth();
 
   useEffect(() => {
     const token = searchParams.get('token');
@@ -13,9 +15,8 @@ const AuthCallback = () => {
       try {
         const user = JSON.parse(decodeURIComponent(userParam));
 
-        // Store authentication data
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        // Use auth context to login
+        login(token, user);
 
         // Redirect to home page
         navigate('/', { replace: true });
@@ -27,7 +28,7 @@ const AuthCallback = () => {
       // No token, redirect to login
       navigate('/login', { replace: true });
     }
-  }, [navigate, searchParams]);
+  }, [navigate, searchParams, login]);
 
   return (
     <div className="auth-callback">

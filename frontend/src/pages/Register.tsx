@@ -75,7 +75,9 @@ const Register = () => {
   };
 
   const handleGoogleRegister = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/auth/google`;
+    // Use environment variable for API base URL
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
+    window.location.href = `${apiBaseUrl}/api/auth/google`;
   };
 
   return (
