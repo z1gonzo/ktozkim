@@ -88,6 +88,6 @@ describe('Authentication', () => {
       .expect(401);
 
     expect(response.body).toHaveProperty('success', false);
-    expect(response.body).toHaveProperty('message', 'Not authenticated');
+    expect(response.body).toHaveProperty('message', 'Access token required');
   });
 });
