@@ -76,11 +76,21 @@ Frontend (React) ←→ Backend (Express) ←→ Database (PostgreSQL)
 git clone <repo-url>
 cd ktozkim-pl
 
-# Start local development environment
-docker-compose up -d
+# Start database (Docker)
+docker-compose up -d db
 
+# Start backend (development mode)
+cd backend && npm run dev
+# Backend runs on http://localhost:5001
+
+# Start frontend (separate terminal)
+cd frontend && npm run dev
+# Frontend runs on http://localhost:3000
+
+# Or use full Docker environment
+docker-compose up -d
 # Access frontend at http://localhost:3000
-# Access backend API at http://localhost:5000
+# Access backend API at http://localhost:5000 (Docker)
 ```
 
 ### Full Deployment (Minikube)
@@ -107,13 +117,13 @@ minikube service backend-service
 ### Phase 2: Backend Development ✅
 - [x] Set up Node.js + Express + TypeScript
 - [x] Configure PostgreSQL database schema
-- [x] Implement authentication system (basic)
-- [x] Create API endpoints for CRUD operations (mock data)
+- [x] Implement JWT authentication system with bcrypt password hashing
+- [x] Create API endpoints for CRUD operations (real database integration)
 - [x] Add input validation and error handling
 - [x] Fix Docker build issues and container startup
 - [x] Test backend API endpoints successfully
-- [x] Implement database integration
-- [x] Implement basic testing
+- [x] Implement database integration with connection pooling
+- [x] Implement comprehensive authentication middleware
 
 ### Phase 3: Frontend Development ✅
 - [x] Initialize React + TypeScript project
@@ -156,6 +166,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - **Official Profiles**: Browse public officials with search and filtering
 - **Report System**: Submit allegations about conflicts of interest
 - **User Interface**: Responsive React app with routing and components
+- **JWT Authentication**: Complete user registration, login, and protected endpoints
 - **Database Integration**: Full PostgreSQL integration with connection pooling
 - **Data Management**: Proper database relationships and sample data
 - **Deployment Ready**: Production Docker images and Kubernetes manifests
@@ -178,8 +189,11 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - [x] Test database integration with Docker Compose
 - [x] Verify API endpoints return real data from PostgreSQL
 
-### Phase 7: Advanced Features
-- [ ] Add user authentication with JWT tokens
+### Phase 7: Advanced Features ✅
+- [x] Add user authentication with JWT tokens (complete)
+- [x] Implement bcrypt password hashing for security
+- [x] Create protected API endpoints with middleware
+- [x] Add database schema updates for OAuth support
 - [ ] Implement report verification workflow
 - [ ] Add admin panel for content management
 - [ ] Implement advanced search with full-text indexing
