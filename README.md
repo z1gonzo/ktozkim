@@ -264,13 +264,16 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 
 ## 📊 Project Statistics
 
-- **Lines of Code**: ~2,000+ across frontend and backend
+- **Lines of Code**: ~3,000+ across full-stack application
+- **Services Deployed**: 3 (Frontend, Backend, Database)
 - **Docker Images**: 3 production-ready containers
 - **Kubernetes Resources**: 6 manifests (deployments + services + PVC)
 - **API Endpoints**: 8 RESTful endpoints implemented
 - **Database Tables**: 5 core entities with relationships
-- **Test Coverage**: Docker Compose + Minikube deployment verified
-- **Time to MVP**: Complete implementation and deployment
+- **Test Suites**: 11 total tests (8 backend + 3 frontend - all passing)
+- **CI/CD Pipeline**: GitHub Actions with Railway integration
+- **Deployment Platform**: Railway cloud infrastructure
+- **Time to MVP**: Complete implementation & production deployment
 
 ## 🏆 Success Metrics
 
@@ -279,7 +282,9 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 ✅ **Authentication System**: Complete JWT registration/login working
 ✅ **Database Integration**: PostgreSQL with Railway managed service
 ✅ **Cross-Origin Support**: CORS resolved for production deployment
-✅ **Code Quality**: TypeScript throughout with proper error handling
+✅ **Test Coverage**: 11/11 tests passing (8 backend + 3 frontend)
+✅ **Code Quality**: TypeScript + ESLint throughout both services
+✅ **CI/CD Pipeline**: Fully operational with automated testing
 ✅ **Documentation**: Comprehensive setup and API documentation
 ✅ **Scalability**: Containerized architecture ready for production
 ✅ **Civic Impact**: Platform ready for real citizen engagement
