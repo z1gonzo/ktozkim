@@ -1,6 +1,6 @@
 import express from 'express';
 import { OfficialModel } from '../models/Official';
-import { body, param, query, validationResult } from 'express-validator';
+import { param, query, validationResult } from 'express-validator';
 
 const router = express.Router();
 
