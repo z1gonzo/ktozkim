@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { registerUser } from '../services/api';
+import { useAuth } from '../hooks/useAuth';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +12,7 @@ const Register = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,21 +42,33 @@ const Register = () => {
     }
 
     try {
-      const data = await registerUser({
-        email: formData.email,
-        password: formData.password,
-        firstName: formData.firstName,
-        lastName: formData.lastName
+      // Use direct fetch instead of api service for consistency
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName
+        })
       });
 
-      // Store token in localStorage
-      localStorage.setItem('token', data.data.token);
-      localStorage.setItem('user', JSON.stringify(data.data.user));
+      const data = await response.json();
 
-      // Redirect to home page
-      navigate('/');
+      if (data.success) {
+        // Use auth context to login
+        login(data.data.token, data.data.user);
+
+        // Redirect to home page
+        navigate('/');
+      } else {
+        setError(data.message || 'Registration failed');
+      }
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Błąd sieci. Spróbuj ponownie.');
+      setError('Network error. Please try again.');
     } finally {
       setLoading(false);
     }

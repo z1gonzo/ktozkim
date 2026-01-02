@@ -1,15 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Header from './Header';
 
-// Mock localStorage
-const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
-};
-global.localStorage = localStorageMock as any;
+// Mock the useAuth hook
+jest.mock('../hooks/useAuth', () => ({
+  useAuth: jest.fn(),
+}));
 
 const renderWithRouter = (component: React.ReactElement) => {
   return render(
@@ -20,12 +16,19 @@ const renderWithRouter = (component: React.ReactElement) => {
 };
 
 describe('Header', () => {
+  const mockUseAuth = require('../hooks/useAuth').useAuth;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('renders logo and navigation links', () => {
-    localStorageMock.getItem.mockReturnValue(null);
+    mockUseAuth.mockReturnValue({
+      isAuthenticated: false,
+      user: null,
+      logout: jest.fn(),
+    });
+
     renderWithRouter(<Header />);
 
     expect(screen.getByText('Kto z kim?')).toBeInTheDocument();
@@ -35,37 +38,30 @@ describe('Header', () => {
   });
 
   it('shows login and register buttons when not authenticated', () => {
-    localStorageMock.getItem.mockReturnValue(null);
+    mockUseAuth.mockReturnValue({
+      isAuthenticated: false,
+      user: null,
+      logout: jest.fn(),
+    });
+
     renderWithRouter(<Header />);
 
     expect(screen.getByText('Zaloguj się')).toBeInTheDocument();
     expect(screen.getByText('Zarejestruj się')).toBeInTheDocument();
   });
 
-  it('shows user menu when authenticated', async () => {
+  it('shows user menu when authenticated', () => {
     const mockUser = { firstName: 'Jan', lastName: 'Kowalski' };
 
-    // Mock localStorage before rendering
-    Object.defineProperty(window, 'localStorage', {
-      value: {
-        getItem: jest.fn((key: string) => {
-          if (key === 'token') return 'mock-token';
-          if (key === 'user') return JSON.stringify(mockUser);
-          return null;
-        }),
-        setItem: jest.fn(),
-        removeItem: jest.fn(),
-        clear: jest.fn(),
-      },
-      writable: true,
+    mockUseAuth.mockReturnValue({
+      isAuthenticated: true,
+      user: mockUser,
+      logout: jest.fn(),
     });
 
     renderWithRouter(<Header />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Witaj, Jan!')).toBeInTheDocument();
-    });
-
+    expect(screen.getByText('Witaj, Jan!')).toBeInTheDocument();
     expect(screen.getByText('Wyloguj się')).toBeInTheDocument();
   });
 });
