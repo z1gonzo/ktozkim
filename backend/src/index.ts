@@ -32,10 +32,10 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS configuration
+// CORS configuration - temporarily allow all origins for testing
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? (process.env.FRONTEND_URL || 'https://ktozkim-frontend-production.up.railway.app')
+    ? true  // Allow all origins in production for now
     : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
 }));
