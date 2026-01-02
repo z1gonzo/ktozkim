@@ -6,12 +6,18 @@ module.exports = {
   extends: [
     'eslint:recommended',
   ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: './tsconfig.json',
   },
+  plugins: [
+    '@typescript-eslint',
+  ],
   rules: {
-    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'no-unused-vars': 'off', // Turn off base rule
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'no-console': 'warn',
   },
   ignorePatterns: ['dist/', 'node_modules/', '*.js'],
