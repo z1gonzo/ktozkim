@@ -4,14 +4,14 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy backend package files from root context
+COPY backend/package*.json ./
 
 # Install all dependencies
 RUN npm install
 
-# Copy source code
-COPY . .
+# Copy backend source code from root context
+COPY backend/ ./
 
 # Build TypeScript
 RUN npm run build || (echo "TypeScript compilation failed" && exit 1)
