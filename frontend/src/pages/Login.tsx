@@ -57,10 +57,7 @@ const Login = () => {
   const handleGoogleLogin = () => {
     // Use environment variable for API base URL
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
-    console.log('VITE_API_BASE_URL:', apiBaseUrl); // Debug log
-    const fullUrl = `${apiBaseUrl}/api/auth/google`;
-    console.log('Google OAuth URL:', fullUrl); // Debug log
-    window.location.href = fullUrl;
+    window.location.href = `${apiBaseUrl}/api/auth/google`;
   };
 
   return (
