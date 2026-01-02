@@ -2,10 +2,10 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="container">
-        <p>&copy; 2024 Ktoż Kim? Civic Watchdog Platform. All rights reserved.</p>
+        <p>&copy; 2024 Kto z kim? Platforma obywatelska do kontroli władzy. Wszelkie prawa zastrzeżone.</p>
         <p>
-          Built with React, TypeScript, Node.js, Express, and PostgreSQL.
-          Containerized with Docker and orchestrated with Kubernetes.
+          Zbudowane z użyciem React, TypeScript, Node.js, Express i PostgreSQL.
+          Skonteneryzowane z Docker i orkiestrowane z Kubernetes.
         </p>
       </div>
     </footer>

@@ -54,17 +54,17 @@ const Officials = () => {
   });
 
   if (loading) {
-    return <div className="loading">Loading officials...</div>;
+    return <div className="loading">Ładowanie urzędników...</div>;
   }
 
   return (
     <div className="officials">
-      <h1>Public Officials</h1>
+      <h1>Urzędnicy publiczni</h1>
 
       <div className="filters">
         <input
           type="text"
-          placeholder="Search officials..."
+          placeholder="Szukaj urzędników..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
@@ -74,8 +74,8 @@ const Officials = () => {
           onChange={(e) => setCityFilter(e.target.value)}
           className="city-select"
         >
-          <option value="">All Cities</option>
-          <option value="Warsaw">Warsaw</option>
+          <option value="">Wszystkie miasta</option>
+          <option value="Warsaw">Warszawa</option>
         </select>
       </div>
 
@@ -84,12 +84,12 @@ const Officials = () => {
           <div key={official.id} className="official-card">
             <div className="official-header">
               <h3>{official.firstName} {official.lastName}</h3>
-              {official.verified && <span className="verified-badge">✓ Verified</span>}
+              {official.verified && <span className="verified-badge">✓ Zweryfikowany</span>}
             </div>
             <p className="position">{official.position}</p>
             {official.city && <p className="city">{official.city}</p>}
             {official.bio && <p className="bio">{official.bio}</p>}
-            <button className="btn btn-primary">View Details</button>
+            <button className="btn btn-primary">Zobacz szczegóły</button>
           </div>
         ))}
       </div>

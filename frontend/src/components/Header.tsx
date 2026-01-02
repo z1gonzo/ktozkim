@@ -8,9 +8,9 @@ const Header = () => {
           <h1>Kto z kim?</h1>
         </Link>
         <nav className="nav">
-          <Link to="/">Home</Link>
-          <Link to="/officials">Officials</Link>
-          <Link to="/reports">Reports</Link>
+          <Link to="/">Strona główna</Link>
+          <Link to="/officials">Urzędnicy</Link>
+          <Link to="/reports">Raporty</Link>
         </nav>
       </div>
     </header>

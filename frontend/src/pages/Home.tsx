@@ -2,53 +2,53 @@ const Home = () => {
   return (
     <div className="home">
       <div className="hero">
-        <h1>Welcome to Kto z kim?</h1>
+        <h1>Witaj w Kto z kim?</h1>
         <p>
-          A civic watchdog platform for documenting and exploring connections,
-          signs of hypocrisy, and suspicions of nepotism among public figures
-          in cities and nationwide.
+          Platforma obywatelska do dokumentowania i eksploracji połączeń,
+          znaków hipokryzji i podejrzeń o nepotyzm wśród osób publicznych
+          w miastach i na całym kraju.
         </p>
         <div className="hero-actions">
           <a href="/officials" className="btn btn-primary">
-            Browse Officials
+            Przeglądaj urzędników
           </a>
           <a href="/reports" className="btn btn-secondary">
-            View Reports
+            Obejrzij raporty
           </a>
         </div>
       </div>
 
       <div className="features">
         <div className="feature">
-          <h3>Official Profiles</h3>
+          <h3>Profile urzędników</h3>
           <p>
-            Comprehensive profiles of public officials, city councilors,
-            and municipal company leaders.
+            Kompletne profile osób publicznych, radnych miejskich,
+            i liderów przedsiębiorstw komunałnych.
           </p>
         </div>
         <div className="feature">
-          <h3>Connection Mapping</h3>
+          <h3>Mapowanie połączeń</h3>
           <p>
-            Explore relationships and connections between officials
-            and companies.
+            Eksploruj relacje i połączenia między urzędnikami
+            i firmami.
           </p>
         </div>
         <div className="feature">
-          <h3>Citizen Reports</h3>
+          <h3>Raporty obywatelskie</h3>
           <p>
-            Submit and review reports of potential conflicts of interest
-            or nepotism.
+            Zgłaszaj i przeglądaj raporty o potencjalnych konfliktach interesów
+            lub nepotyźmie.
           </p>
         </div>
       </div>
 
       <div className="mission">
-        <h2>Our Mission</h2>
+        <h2>Nasza misja</h2>
         <p>
-          To empower citizens with transparency and accountability in local
-          governance. By documenting connections and potential conflicts,
-          we help build trust in public institutions and promote ethical
-          governance.
+          Aby upoważnić obywateli do przejrzystości i odpowiedzialności w lokalnej
+          rządowości. Poprzez dokumentowanie połączeń i potencjalnych konfliktów,
+          pomagamy budować zaufanie do instytucji publicznych i promujemy etyczną
+          rządy.
         </p>
       </div>
     </div>

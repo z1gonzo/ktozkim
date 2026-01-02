@@ -41,77 +41,77 @@ const Reports = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading reports...</div>;
+    return <div className="loading">Ładowanie raportów...</div>;
   }
 
   return (
     <div className="reports">
       <div className="reports-header">
-        <h1>Citizen Reports</h1>
+        <h1>Raporty obywatelskie</h1>
         <button
           className="btn btn-primary"
           onClick={() => setShowForm(!showForm)}
         >
-          {showForm ? 'Cancel' : 'Submit Report'}
+          {showForm ? 'Anuluj' : 'Zgłoś raport'}
         </button>
       </div>
 
       {showForm && (
         <form className="report-form" onSubmit={handleSubmitReport}>
-          <h3>Submit New Report</h3>
+          <h3>Zgłoś nowy raport</h3>
 
           <div className="form-group">
-            <label htmlFor="allegationType">Allegation Type</label>
+            <label htmlFor="allegationType">Typ zarzutu</label>
             <select id="allegationType" required>
-              <option value="">Select type...</option>
-              <option value="nepotism">Nepotism</option>
-              <option value="conflict_of_interest">Conflict of Interest</option>
-              <option value="hypocrisy">Hypocrisy</option>
-              <option value="corruption">Corruption</option>
+              <option value="">Wybierz typ...</option>
+              <option value="nepotism">Nepotyzm</option>
+              <option value="conflict_of_interest">Konflikt interesów</option>
+              <option value="hypocrisy">Hipokryzja</option>
+              <option value="corruption">Korupcja</option>
             </select>
           </div>
 
           <div className="form-group">
-            <label htmlFor="officialId">Official ID</label>
+            <label htmlFor="officialId">ID urzędnika</label>
             <input
               type="number"
               id="officialId"
-              placeholder="Enter official ID"
+              placeholder="Wprowadź ID urzędnika"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="title">Title</label>
+            <label htmlFor="title">Tytuł</label>
             <input
               type="text"
               id="title"
-              placeholder="Brief title of the allegation"
+              placeholder="Krótki tytuł zarzutu"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">Opis</label>
             <textarea
               id="description"
-              placeholder="Detailed description of the allegation"
+              placeholder="Szczegółowy opis zarzutu"
               rows={5}
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="evidence">Evidence/Links</label>
+            <label htmlFor="evidence">Dowody/Łącza</label>
             <textarea
               id="evidence"
-              placeholder="Links to news articles, documents, etc."
+              placeholder="Łącza do artykułów prasowych, dokumentów, itp."
               rows={3}
             />
           </div>
 
           <button type="submit" className="btn btn-primary">
-            Submit Report
+            Zgłoś raport
           </button>
         </form>
       )}
@@ -126,11 +126,11 @@ const Reports = () => {
               </span>
             </div>
             <p className="allegation-type">
-              Type: {report.allegationType.replace('_', ' ')}
+              Typ: {report.allegationType.replace('_', ' ')}
             </p>
             <p className="description">{report.description}</p>
             <p className="date">
-              Submitted: {new Date(report.createdAt).toLocaleDateString()}
+              Zgłoszono: {new Date(report.createdAt).toLocaleDateString()}
             </p>
           </div>
         ))}
