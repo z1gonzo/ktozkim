@@ -93,6 +93,35 @@ docker-compose up -d
 # Access backend API at http://localhost:5000 (Docker)
 ```
 
+### Railway Cloud Deployment
+```bash
+# Repository is already connected to Railway
+# CI/CD pipeline automatically deploys on push to master/main
+
+# Railway Configuration:
+# - nixpacks.toml: Build configuration for Railway
+# - railway.json: Service configuration with health checks
+# - start.sh: Production deployment script
+
+# Deployment Process:
+1. Push changes to master branch
+2. GitHub Actions runs tests and builds Docker images
+3. Railway automatically deploys using nixpacks.toml configuration
+4. Monitor at: https://railway.app/project/YOUR_PROJECT_ID
+
+# Required Environment Variables in Railway:
+DATABASE_URL=postgresql://user:password@host:5432/database
+JWT_SECRET=your-production-jwt-secret
+NODE_ENV=production
+FRONTEND_URL=https://your-app.railway.app
+
+# For Multi-Service Setup (Recommended):
+# 1. Create separate Railway service for PostgreSQL database
+# 2. Create separate Railway service for backend API
+# 3. Create separate Railway service for frontend (static hosting)
+# 4. Connect services using Railway's private networking
+```
+
 ### Full Deployment (Minikube)
 ```bash
 # Start Minikube
@@ -146,9 +175,9 @@ minikube service backend-service
 - [x] Successfully deploy to Minikube
 - [x] Test full application stack in Kubernetes
 - [x] Verify services are running and accessible
-- [ ] Configure CI/CD pipeline
-- [ ] Set up monitoring and logging
-- [ ] Deploy to production environment
+- [x] Configure CI/CD pipeline (GitHub Actions)
+- [x] Set up automated testing and Docker builds
+- [x] Deploy to Railway cloud platform
 
 ## 🎯 What We Accomplished
 
