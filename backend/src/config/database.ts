@@ -6,9 +6,10 @@ let pool: Pool;
 if (process.env.DATABASE_URL) {
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     max: 20,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    connectionTimeoutMillis: 5000, // Increased timeout for cloud
   });
 } else {
   // Use individual environment variables (for development)
@@ -20,7 +21,7 @@ if (process.env.DATABASE_URL) {
     password: process.env.DB_PASSWORD || 'password',
     max: 20,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    connectionTimeoutMillis: 5000, // Increased timeout for cloud
   });
 }
 
