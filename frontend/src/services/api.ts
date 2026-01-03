@@ -1,5 +1,16 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
+// For production, fallback to Railway backend if env var is not set
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  if (envUrl) return envUrl;
+  // In production, fallback to Railway backend
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+    return 'https://ktozkim-backend-production.up.railway.app';
+  }
+  return 'http://localhost:5000';
+};
+
 interface User {
   id: number;
   email: string;
@@ -30,7 +41,8 @@ interface Report {
 
 export const getReports = async (): Promise<Report[]> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/reports`);
+    const baseUrl = getApiBaseUrl();
+    const response = await fetch(`${baseUrl}/api/reports`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -43,7 +55,8 @@ export const getReports = async (): Promise<Report[]> => {
 
 export const createReport = async (reportData: Omit<Report, 'id' | 'status' | 'createdAt'>): Promise<Report> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/reports`, {
+    const baseUrl = getApiBaseUrl();
+    const response = await fetch(`${baseUrl}/api/reports`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +75,8 @@ export const createReport = async (reportData: Omit<Report, 'id' | 'status' | 'c
 
 export const getOfficials = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/officials`);
+    const baseUrl = getApiBaseUrl();
+    const response = await fetch(`${baseUrl}/api/officials`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -81,7 +95,8 @@ export const registerUser = async (userData: {
   lastName: string;
 }): Promise<AuthResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+    const baseUrl = getApiBaseUrl();
+    const response = await fetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -107,7 +122,8 @@ export const loginUser = async (credentials: {
   password: string;
 }): Promise<AuthResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    const baseUrl = getApiBaseUrl();
+    const response = await fetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -135,7 +151,8 @@ export const getCurrentUser = async (): Promise<User> => {
       throw new Error('No authentication token found');
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+    const baseUrl = getApiBaseUrl();
+    const response = await fetch(`${baseUrl}/api/auth/me`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

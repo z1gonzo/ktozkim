@@ -28,7 +28,7 @@ const Login = () => {
     setError('');
 
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://ktozkim-backend-production.up.railway.app';
       const response = await fetch(`${apiBaseUrl}/api/auth/login`, {
         method: 'POST',
         headers: {
@@ -56,8 +56,8 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    // Use environment variable for API base URL
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
+    // Use environment variable for API base URL, fallback to production backend
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://ktozkim-backend-production.up.railway.app';
     window.location.href = `${apiBaseUrl}/api/auth/google`;
   };
 
