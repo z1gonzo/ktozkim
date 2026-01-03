@@ -154,7 +154,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:5000/api/auth/google/callback'
   },
-  async (accessToken, refreshToken, profile, done) => {
+  async (accessToken: string, refreshToken: string, profile: any, done: any) => {
     try {
       // Check if user exists with this Google ID
       let user = await UserModel.findByGoogleId(profile.id);
@@ -174,8 +174,8 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
           // Create new user
           user = await UserModel.create({
             email: profile.emails![0].value,
-            first_name: profile.name?.givenName,
-            last_name: profile.name?.familyName,
+            first_name: profile.name?.givenName || '',
+            last_name: profile.name?.familyName || '',
             google_id: profile.id,
             auth_provider: 'google'
           });
