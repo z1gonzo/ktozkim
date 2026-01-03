@@ -42,8 +42,9 @@ const Register = () => {
     }
 
     try {
-      // Use direct fetch instead of api service for consistency
-      const response = await fetch('/api/auth/register', {
+      // Use direct fetch with API base URL for production compatibility
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
+      const response = await fetch(`${apiBaseUrl}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

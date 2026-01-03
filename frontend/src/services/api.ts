@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 interface User {
   id: number;
@@ -30,7 +30,7 @@ interface Report {
 
 export const getReports = async (): Promise<Report[]> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/reports`);
+    const response = await fetch(`${API_BASE_URL}/api/reports`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -43,7 +43,7 @@ export const getReports = async (): Promise<Report[]> => {
 
 export const createReport = async (reportData: Omit<Report, 'id' | 'status' | 'createdAt'>): Promise<Report> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/reports`, {
+    const response = await fetch(`${API_BASE_URL}/api/reports`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export const createReport = async (reportData: Omit<Report, 'id' | 'status' | 'c
 
 export const getOfficials = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/officials`);
+    const response = await fetch(`${API_BASE_URL}/api/officials`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -81,7 +81,7 @@ export const registerUser = async (userData: {
   lastName: string;
 }): Promise<AuthResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export const loginUser = async (credentials: {
   password: string;
 }): Promise<AuthResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ export const getCurrentUser = async (): Promise<User> => {
       throw new Error('No authentication token found');
     }
 
-    const response = await fetch(`${API_BASE_URL}/auth/me`, {
+    const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
