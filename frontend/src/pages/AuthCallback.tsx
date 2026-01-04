@@ -8,11 +8,13 @@ const AuthCallback = () => {
   const { login } = useAuth();
 
   useEffect(() => {
+    console.log('AuthCallback useEffect triggered');
     const token = searchParams.get('token');
     const userParam = searchParams.get('user');
 
     console.log('AuthCallback - token:', token);
     console.log('AuthCallback - userParam:', userParam);
+    console.log('AuthCallback - searchParams:', searchParams);
 
     if (token && userParam) {
       try {
