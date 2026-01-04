@@ -9,7 +9,9 @@ if (process.env.DATABASE_URL) {
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     max: 20,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000, // Increased timeout for cloud
+    connectionTimeoutMillis: 10000, // Increased timeout for cloud
+    statement_timeout: 30000, // 30 second statement timeout
+    query_timeout: 30000, // 30 second query timeout
   });
 } else {
   // Use individual environment variables (for development)
@@ -21,7 +23,9 @@ if (process.env.DATABASE_URL) {
     password: process.env.DB_PASSWORD || 'password',
     max: 20,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000, // Increased timeout for cloud
+    connectionTimeoutMillis: 10000, // Increased timeout for cloud
+    statement_timeout: 30000, // 30 second statement timeout
+    query_timeout: 30000, // 30 second query timeout
   });
 }
 
