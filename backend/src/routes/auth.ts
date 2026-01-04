@@ -187,41 +187,57 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     } catch (error) {
       return done(error as Error, undefined);
     }
-  }));
+  }
+);
 
-  // Google OAuth routes
-  router.get('/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
-  );
+// Serialize user for session
+passport.serializeUser((user: any, done) => {
+  done(null, user.id);
+});
 
-  router.get('/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    async (req: AuthRequest, res: express.Response) => {
-      try {
-        const user = req.user as any;
+// Deserialize user from session
+passport.deserializeUser(async (id: number, done) => {
+  try {
+    const user = await UserModel.findById(id);
+    done(null, user || false);
+  } catch (error) {
+    done(error, false);
+  }
+});
 
-        // Generate JWT
-        const token = jwt.sign(
-          { userId: user.id, email: user.email },
-          process.env.JWT_SECRET || 'fallback_secret',
-          { expiresIn: '24h' }
-        );
+// Google OAuth routes
+router.get('/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 
-        // Redirect to frontend with token
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-        res.redirect(`${frontendUrl}/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify({
-          id: user.id,
-          email: user.email,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          authProvider: user.auth_provider
-        }))}`);
-      } catch (error) {
-        console.error('Google OAuth callback error:', error);
-        res.redirect('/login?error=oauth_failed');
-      }
+router.get('/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  async (req: AuthRequest, res: express.Response) => {
+    try {
+      const user = req.user as any;
+
+      // Generate JWT
+      const token = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.JWT_SECRET || 'fallback_secret',
+        { expiresIn: '24h' }
+      );
+
+      // Redirect to frontend with token
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+      res.redirect(`${frontendUrl}/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify({
+        id: user.id,
+        email: user.email,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        authProvider: user.auth_provider
+      }))}`);
+    } catch (error) {
+      console.error('Google OAuth callback error:', error);
+      res.redirect('/login?error=oauth_failed');
     }
-  );
+  }
+);
 }
 
 // Get current user endpoint
