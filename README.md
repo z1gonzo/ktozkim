@@ -13,6 +13,7 @@ This project represents a **complete MVP implementation** of the ktozkim.pl civi
 - ✅ **Responsive Interface**: Modern React application with routing
 
 ### 🚀 **Deployment & Testing Status**
+
 - **Backend API**: `https://ktozkim-backend-production.up.railway.app/` ✅ **LIVE**
 - **Database**: Railway PostgreSQL ✅ **CONNECTED & FUNCTIONAL**
 - **Authentication**: JWT registration/login ✅ **WORKING END-TO-END**
@@ -21,6 +22,7 @@ This project represents a **complete MVP implementation** of the ktozkim.pl civi
 - **Code Quality**: ESLint ✅ **BOTH SERVICES CONFIGURED**
 
 ### Tech Stack Achievement
+
 - **Frontend**: React 18 + TypeScript + Vite (production deployment)
 - **Backend**: Node.js 18 + Express + TypeScript (RESTful API)
 - **Database**: PostgreSQL with comprehensive relational schema
@@ -29,6 +31,7 @@ This project represents a **complete MVP implementation** of the ktozkim.pl civi
 - **Authentication**: JWT with bcrypt password hashing
 
 ### What We Accomplished
+
 1. ✅ **Complete Project Structure**: Organized monorepo with shared tooling
 2. ✅ **Production-Ready API**: Authentication, officials management, reports system
 3. ✅ **Responsive Web App**: Modern React interface with routing and components
@@ -40,6 +43,7 @@ This project represents a **complete MVP implementation** of the ktozkim.pl civi
 ## Project Overview
 
 This application serves as a civic watchdog tool where citizens can:
+
 - View profiles of public officials, city councilors, and municipal company leaders
 - Explore documented connections and relationships between officials
 - Submit reports of potential conflicts of interest or nepotism
@@ -66,6 +70,7 @@ Frontend (React) ←→ Backend (Express) ←→ Database (PostgreSQL)
 ## Data Model
 
 ### Core Entities
+
 - **Users**: Citizens who can submit reports
 - **Officials**: Public figures (councilors, directors, presidents)
 - **Companies**: Municipal companies and politically-oriented businesses
@@ -75,12 +80,14 @@ Frontend (React) ←→ Backend (Express) ←→ Database (PostgreSQL)
 ## Development Setup
 
 ### Prerequisites
+
 - Docker & Docker Compose
 - Minikube
 - Node.js 18+ (for local development)
 - kubectl
 
 ### Quick Start
+
 ```bash
 # Clone repository
 git clone <repo-url>
@@ -103,7 +110,15 @@ docker-compose up -d
 # Access backend API at http://localhost:5000 (Docker)
 ```
 
+## PR Checklist
+
+- Use `.github/PULL_REQUEST_TEMPLATE.md` when opening PRs and complete the checklist.
+- Run tests locally and ensure they pass before opening a PR (see Tests & CI commands in repo).
+- If you change the DB schema, update `database/init.sql` and mention migrations in the PR description.
+- Update documentation when changes affect runtime behavior, CI, or public API.
+
 ### Railway Cloud Deployment
+
 ```bash
 # Repository is already connected to Railway
 # CI/CD pipeline automatically deploys on push to master/main
@@ -148,6 +163,7 @@ GOOGLE_CALLBACK_URL=https://your-app.railway.app/api/auth/google/callback
 To enable Google authentication, follow these steps:
 
 #### 1. Create Google OAuth Credentials
+
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select existing one
 3. Enable the Google+ API
@@ -158,7 +174,9 @@ To enable Google authentication, follow these steps:
    - For production: `https://your-app.railway.app/api/auth/google/callback`
 
 #### 2. Configure Environment Variables
+
 Add these to your Railway environment variables:
+
 ```
 GOOGLE_CLIENT_ID=your-client-id-from-google
 GOOGLE_CLIENT_SECRET=your-client-secret-from-google
@@ -166,12 +184,15 @@ GOOGLE_CALLBACK_URL=https://your-app.railway.app/api/auth/google/callback
 ```
 
 #### 3. Frontend Configuration
+
 For production, add this environment variable to your frontend deployment:
+
 ```
 VITE_API_BASE_URL=https://your-app.railway.app
 ```
 
 #### 4. Test Google OAuth
+
 1. Visit your deployed app
 2. Click "Zaloguj się przez Google" button
 3. Complete Google authentication flow
@@ -180,6 +201,7 @@ VITE_API_BASE_URL=https://your-app.railway.app
 **Note**: Google OAuth will automatically create user accounts or link to existing email addresses.
 
 ### Full Deployment (Minikube)
+
 ```bash
 # Start Minikube
 minikube start
@@ -195,12 +217,14 @@ minikube service backend-service
 ## Project Progress
 
 ### Phase 1: Project Setup ✅
+
 - [x] Create project structure
 - [x] Initialize README.md with progress tracking
 - [x] Set up Git repository
 - [x] Create initial Docker configurations
 
 ### Phase 2: Backend Development ✅
+
 - [x] Set up Node.js + Express + TypeScript
 - [x] Configure PostgreSQL database schema
 - [x] Implement JWT authentication system with bcrypt password hashing
@@ -212,6 +236,7 @@ minikube service backend-service
 - [x] Implement comprehensive authentication middleware
 
 ### Phase 3: Frontend Development ✅
+
 - [x] Initialize React + TypeScript project
 - [x] Create component library (basic)
 - [x] Implement routing and navigation
@@ -220,6 +245,7 @@ minikube service backend-service
 - [x] Implement report submission form (basic)
 
 ### Phase 4: Integration & Testing ✅
+
 - [x] Connect frontend to backend APIs (Railway deployment)
 - [x] Implement data fetching and API integration
 - [x] Resolve CORS issues for cross-origin requests
@@ -228,6 +254,7 @@ minikube service backend-service
 - [x] End-to-end testing of Railway deployment
 
 ### Phase 5: Deployment & Production ✅
+
 - [x] Create production Docker images
 - [x] Set up Kubernetes manifests (complete)
 - [x] Successfully deploy to Minikube
@@ -242,6 +269,7 @@ minikube service backend-service
 This project successfully delivered a **complete MVP** of the ktozkim.pl civic watchdog platform with:
 
 ### ✅ **Technical Achievements:**
+
 - **Full-Stack Application**: React frontend + Node.js backend + PostgreSQL database
 - **Containerization**: Docker images for all services with multi-stage builds
 - **Orchestration**: Kubernetes deployment with Minikube testing
@@ -250,6 +278,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - **API Design**: RESTful endpoints with authentication, validation, and error handling
 
 ### ✅ **Features Delivered:**
+
 - **Official Profiles**: Browse public officials with search and filtering
 - **Report System**: Submit allegations about conflicts of interest
 - **User Interface**: Responsive React app with routing and components
@@ -259,6 +288,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - **Deployment Ready**: Production Docker images and Kubernetes manifests
 
 ### ✅ **Quality Assurance:**
+
 - **Code Quality**: TypeScript for type safety, ESLint for code standards
 - **Database Layer**: Complete models with proper error handling and validation
 - **Container Security**: Non-root users, health checks, proper resource limits
@@ -268,6 +298,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 ## 🚀 Next Steps & Future Development
 
 ### Phase 6: Database Integration ✅
+
 - [x] Implement real PostgreSQL connections in backend
 - [x] Create database models for all tables (users, officials, reports)
 - [x] Add database connection pooling with environment variable support
@@ -277,6 +308,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - [x] Verify API endpoints return real data from PostgreSQL
 
 ### Phase 7: Advanced Features ✅
+
 - [x] Add user authentication with JWT tokens (complete)
 - [x] Implement bcrypt password hashing for security
 - [x] Create protected API endpoints with middleware
@@ -288,6 +320,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - [ ] Implement notification system for new reports
 
 ### Phase 8: Performance & Security
+
 - [ ] Add Redis caching layer
 - [ ] Implement rate limiting and DDoS protection
 - [ ] Add comprehensive input validation and sanitization
@@ -296,6 +329,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - [ ] Implement backup and recovery procedures
 
 ### Phase 9: Production Deployment
+
 - [ ] Set up CI/CD pipeline (GitHub Actions/Jenkins)
 - [ ] Configure production Kubernetes cluster
 - [ ] Set up monitoring and logging (Prometheus/Grafana)
@@ -304,6 +338,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - [ ] Set up backup and disaster recovery
 
 ### Phase 10: Community & Scale
+
 - [ ] Add multi-language support (Polish + English)
 - [ ] Implement API rate limiting for different user tiers
 - [ ] Add data export functionality
@@ -341,6 +376,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 **The ktozkim.pl platform is now **LIVE on Railway** and fully operational for civic watchdog activities! 🚀**
 
 ### 🎯 **Live URLs**
+
 - **Backend API**: https://ktozkim-backend-production.up.railway.app/ ✅ **FULLY OPERATIONAL**
 - **Database**: Railway PostgreSQL ✅ **CONNECTED & FUNCTIONAL**
 - **Authentication**: JWT system ✅ **WORKING END-TO-END**
@@ -350,9 +386,11 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 ## 📈 **COMPREHENSIVE PROJECT SUMMARY**
 
 ### 🎯 **Mission Accomplished**
+
 **Ktoż Kim?** (Who is Who?) - A complete civic watchdog platform that enables Polish citizens to monitor public officials, track connections, and report potential conflicts of interest.
 
 ### 🏗️ **Architecture Overview**
+
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   React Frontend│◄──►│  Express Backend │◄──►│ PostgreSQL DB   │
@@ -371,6 +409,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 ### ✅ **Complete Feature Set**
 
 #### **🔐 Authentication System**
+
 - User registration with email/password validation
 - JWT token-based authentication
 - Secure password hashing with bcrypt
@@ -378,18 +417,21 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - Session management
 
 #### **👥 Official Profiles**
+
 - Browse public officials database
 - Search and filter by city/position
 - Detailed official information
 - Connection tracking system
 
 #### **📝 Report System**
+
 - Submit corruption allegations
 - Evidence attachment support
 - Status tracking workflow
 - User-generated content management
 
 #### **🗄️ Database Architecture**
+
 - PostgreSQL relational database
 - Users, Officials, Companies, Connections, Reports tables
 - Proper foreign key relationships
@@ -398,6 +440,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 ### 🛠️ **Technical Implementation**
 
 #### **Backend (Node.js/Express/TypeScript)**
+
 - RESTful API design with 8 endpoints
 - Input validation with express-validator
 - Error handling middleware
@@ -406,6 +449,7 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - Railway deployment with health checks
 
 #### **Frontend (React/TypeScript/Vite)**
+
 - Modern React 18 with hooks
 - TypeScript for type safety
 - Responsive component design
@@ -414,12 +458,14 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 - Railway CDN deployment ready
 
 #### **Database (PostgreSQL)**
+
 - Comprehensive schema with 5 core tables
 - Sample data for testing
 - Proper indexing for performance
 - Railway managed backups
 
 #### **DevOps & Quality**
+
 - GitHub Actions CI/CD pipeline
 - Automated testing (11 tests total)
 - ESLint code quality (both services)
@@ -428,17 +474,17 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 
 ### 📊 **Project Metrics**
 
-| Category | Achievement |
-|----------|-------------|
-| **Code Lines** | 3,000+ across full-stack |
-| **Services** | 3 deployed (Frontend, Backend, Database) |
-| **API Endpoints** | 8 RESTful routes implemented |
-| **Database Tables** | 5 entities with relationships |
-| **Test Coverage** | 11/11 tests passing |
-| **CI/CD Pipeline** | 6 automated steps |
-| **Deployment** | Railway cloud infrastructure |
-| **Authentication** | JWT with bcrypt security |
-| **Architecture** | Containerized microservices |
+| Category            | Achievement                              |
+| ------------------- | ---------------------------------------- |
+| **Code Lines**      | 3,000+ across full-stack                 |
+| **Services**        | 3 deployed (Frontend, Backend, Database) |
+| **API Endpoints**   | 8 RESTful routes implemented             |
+| **Database Tables** | 5 entities with relationships            |
+| **Test Coverage**   | 11/11 tests passing                      |
+| **CI/CD Pipeline**  | 6 automated steps                        |
+| **Deployment**      | Railway cloud infrastructure             |
+| **Authentication**  | JWT with bcrypt security                 |
+| **Architecture**    | Containerized microservices              |
 
 ### 🎖️ **Quality Assurance**
 
@@ -468,17 +514,20 @@ This project successfully delivered a **complete MVP** of the ktozkim.pl civic w
 ## API Documentation
 
 ### Authentication
+
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
 - `GET /api/auth/me` - Get current user
 
 ### Officials
+
 - `GET /api/officials` - List officials (with search/filter)
 - `GET /api/officials/:id` - Get official details
 - `POST /api/officials` - Create official (admin only)
 - `PUT /api/officials/:id` - Update official (admin only)
 
 ### Reports
+
 - `GET /api/reports` - List reports
 - `POST /api/reports` - Submit new report
 - `GET /api/reports/:id` - Get report details

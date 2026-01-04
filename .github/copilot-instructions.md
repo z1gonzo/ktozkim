@@ -33,6 +33,14 @@ Example local test flow:
 - `PGPASSWORD=ktozkim_password psql -h localhost -U ktozkim_user -d ktozkim_test -f database/init.sql`
 - `cd backend && NODE_ENV=test DB_HOST=localhost DB_PORT=5432 DB_NAME=ktozkim_test DB_USER=ktozkim_user DB_PASSWORD=ktozkim_password JWT_SECRET=test_jwt_secret npm test -- --forceExit`
 
+## PR checklist ✅
+
+- Use `.github/PULL_REQUEST_TEMPLATE.md` when opening PRs and fill out the checklist.
+- Ensure tests pass locally and CI is green (see Tests / CI section above).
+- Document DB schema changes in `database/init.sql` or add SQL migration and describe it in the PR.
+- Update docs (`README.md`, `CONTRIBUTING.md`, `.github/copilot-instructions.md`) for runtime, API, or CI changes.
+- Run linting for both backend and frontend before submitting.
+
 ## Environment variables (most relevant) 🔐
 
 - Backend recognizes either `DATABASE_URL` or `DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD` (see `backend/src/config/database.ts`).
