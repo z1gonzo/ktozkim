@@ -8,18 +8,12 @@ const AuthCallback = () => {
   const { login } = useAuth();
 
   useEffect(() => {
-    console.log('AuthCallback useEffect triggered');
     const token = searchParams.get('token');
     const userParam = searchParams.get('user');
-
-    console.log('AuthCallback - token:', token);
-    console.log('AuthCallback - userParam:', userParam);
-    console.log('AuthCallback - searchParams:', searchParams);
 
     if (token && userParam) {
       try {
         const user = JSON.parse(decodeURIComponent(userParam));
-        console.log('AuthCallback - parsed user:', user);
 
         // Use auth context to login
         login(token, user);
@@ -31,7 +25,6 @@ const AuthCallback = () => {
         navigate('/login', { replace: true });
       }
     } else {
-      console.log('AuthCallback - missing token or userParam');
       // No token, redirect to login
       navigate('/login', { replace: true });
     }
