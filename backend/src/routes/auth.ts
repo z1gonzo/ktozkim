@@ -187,7 +187,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     } catch (error) {
       return done(error as Error, undefined);
     }
-  }
+  })
 );
 
 // Serialize user for session
